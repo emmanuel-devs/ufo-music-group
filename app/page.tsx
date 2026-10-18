@@ -138,7 +138,7 @@ export default function Home() {
       <section className="events-section" id="events">
         <div className="events-top"><div><div className="section-number">03 / ON THE RADAR</div><h2>ONE TO<br /><em>REMEMBER.</em></h2></div><p>A closer look at the event shared publicly. Details shown here are a concept and should be confirmed with the organizers before going live.</p></div>
         <article className="feature-event">
-          <a className="flyer cursor-target" href="#contact" aria-label="Ask about the Dreams Do Come True event" onPointerMove={handleSpotlightMove}>
+          <a className="flyer cursor-target" href="mailto:hello@ufomusicgroup.com?subject=Question%20about%20Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive" aria-label="Email an enquiry about the Dreams Do Come True event" onPointerMove={handleSpotlightMove}>
             <span className="card-glare" aria-hidden="true" />
             <div className="flyer-head"><span>UFO MUSIC GROUP × FOCUSEDDD</span><span>MIAMI BEACH / 001</span></div>
             <div className="flyer-art"><div className="flyer-disc" /><div className="flyer-type"><span>DREAMS</span><span>DO COME</span><i>TRUE.</i></div><span className="flyer-orbit">OCEAN DRIVE</span></div>
@@ -152,7 +152,7 @@ export default function Home() {
               <div><small>WHEN</small><strong>January 2027</strong><span>Exact date to confirm</span></div>
               <div><small>WHERE</small><strong>Front Porch Cafe</strong><span>918 Ocean Dr, Miami Beach</span></div>
             </div>
-            <a className="orange-button" href="#contact">ASK ABOUT THIS EVENT <ArrowUpRight size={17} /></a>
+            <a className="orange-button" href="mailto:hello@ufomusicgroup.com?subject=Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive%20event%20enquiry&body=Hi%20UFO%20Music%20Group%2C%0A%0AI%27d%20like%20to%20ask%20about%20the%20Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive%20event.%0A%0APlease%20share%20confirmed%20event%20details%20when%20available.%0A">ASK ABOUT THIS EVENT <ArrowUpRight size={17} /></a>
             <p className="fine-print">Date, lineup, venue details and event status must be verified with the organizers.</p>
           </div>
         </article>
@@ -162,11 +162,11 @@ export default function Home() {
         <div className="scene-head"><div className="section-number">04 / THERE'S ROOM FOR YOU</div><h2>MORE THAN<br /><em>A LINEUP.</em></h2><p>The best nights bring different worlds into the same room. Artists, DJs, makers, vendors and curious people all have a part to play.</p></div>
         <div className="scene-grid">
           <article className="scene-tile tile-one" onPointerMove={handleSpotlightMove}>
-            <span className="card-glare" aria-hidden="true" /><div className="tile-num">01 / SOUND</div><div className="tile-text"><small>ARTISTS & DJS</small><h3>Bring<br />the noise.</h3></div><span className="tile-arrow"><ArrowUpRight /></span></article>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">01 / SOUND</div><div className="tile-text"><small>ARTISTS & DJS</small><h3>Bring<br />the noise.</h3></div><a className="tile-arrow" href="mailto:hello@ufomusicgroup.com?subject=Artist%20or%20DJ%20enquiry" aria-label="Enquire about performing as an artist or DJ"><ArrowUpRight /></a></article>
           <article className="scene-tile tile-two" onPointerMove={handleSpotlightMove}>
-            <span className="card-glare" aria-hidden="true" /><div className="tile-num">02 / IDEAS</div><div className="tile-text"><small>CREATORS & MAKERS</small><h3>Bring<br />your world.</h3></div><span className="tile-arrow"><ArrowUpRight /></span></article>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">02 / IDEAS</div><div className="tile-text"><small>CREATORS & MAKERS</small><h3>Bring<br />your world.</h3></div><a className="tile-arrow" href="mailto:hello@ufomusicgroup.com?subject=Creator%20or%20vendor%20collaboration" aria-label="Enquire about a creator or vendor collaboration"><ArrowUpRight /></a></article>
           <article className="scene-tile tile-three" onPointerMove={handleSpotlightMove}>
-            <span className="card-glare" aria-hidden="true" /><div className="tile-num">03 / PEOPLE</div><div className="tile-text"><small>COME AS YOU ARE</small><h3>Find<br />your people.</h3></div><span className="tile-arrow"><ArrowUpRight /></span></article>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">03 / PEOPLE</div><div className="tile-text"><small>COME AS YOU ARE</small><h3>Find<br />your people.</h3></div><a className="tile-arrow" href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20updates" aria-label="Ask about upcoming UFO Music Group events"><ArrowUpRight /></a></article>
         </div>
         <p className="scene-note">A proposed direction for the site, not a confirmed artist roster or list of UFO programs.</p>
       </section>
@@ -174,13 +174,13 @@ export default function Home() {
       <section className="contact-block" id="contact">
         <div className="contact-top"><span>05 / YOUR MOVE</span><span>ARTISTS · PARTNERS · GOOD IDEAS</span></div>
         <h2>GOT A GOOD<br /><em>IDEA?</em></h2>
-        <div className="contact-bottom"><p>Want to play, collaborate, bring a project or just find out what's next?</p><a href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20Enquiry">LET'S START HERE <ArrowUpRight size={17} /></a></div>
+        <div className="contact-bottom"><p>Want to play, collaborate, bring a project or just find out what's next?</p><a href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20Enquiry&body=Hi%20UFO%20Music%20Group%2C%0A%0AI%27m%20getting%20in%20touch%20about%3A%20%5Bartist%20booking%2C%20collaboration%2C%20vendor%20opportunity%2C%20event%20details%2C%20or%20something%20else%5D.%0A%0A>LET'S START HERE <ArrowUpRight size={17} /></a></div>
         <span className="contact-disclaimer">Concept contact address. Replace with an official UFO email before publishing.</span>
       </section>
 
       <footer className="site-footer">
         <a className="footer-wordmark" href="#">UFO<small>MUSIC GROUP</small></a><span>MIAMI, FLORIDA</span>
-        <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">INSTAGRAM <Instagram size={14} /></a>
+        <a href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20social%20media%20links" aria-label="Ask for UFO Music Group social media links">SOCIAL LINKS <Instagram size={14} /></a>
         <div className="footer-bottom"><span>© 2026 UFO MUSIC GROUP CONCEPT</span><span>INDEPENDENT WEBSITE CONCEPT / NOT AFFILIATED</span><a href="#">BACK TO TOP ↑</a></div>
       </footer>
       <div className="custom-cursor" aria-hidden="true"><span>VIEW</span></div>
