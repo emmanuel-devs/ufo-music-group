@@ -184,3 +184,37 @@ html.lenis{scroll-behavior:auto!important}
   .ticker-track { animation: none; transform: none; }
   .ticker-content[aria-hidden="true"] { display: none; }
 }
+
+
+/* Keyboard navigation polish */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 2000;
+  padding: 12px 16px;
+  background: var(--orange);
+  color: var(--black);
+  font: 500 11px 'DM Mono', monospace;
+  text-transform: uppercase;
+  transform: translateY(-160%);
+  transition: transform .18s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+:where(a, button, [tabindex="-1"]):focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 5px;
+}
+.cover :where(a, button):focus-visible,
+.contact-block :where(a, button):focus-visible,
+.flyer:focus-visible {
+  outline-color: var(--white);
+}
+.menu-toggle:focus-visible {
+  outline-offset: 1px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skip-link { transition: none; }
+}
