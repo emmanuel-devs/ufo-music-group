@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, type PointerEvent } from "react";
+import { useEffect, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { ArrowDownRight, ArrowUpRight, Menu, X, Instagram, MoveUpRight } from "lucide-react";
 import Lenis from "lenis";
 
@@ -8,7 +8,7 @@ const navItems = [{ label: "The event", href: "#events" }, { label: "The scene",
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleSpotlightMove = (event: PointerEvent<HTMLElement>) => {
+  const handleSpotlightMove = (event: ReactPointerEvent<HTMLElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     event.currentTarget.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
     event.currentTarget.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
