@@ -8,6 +8,15 @@ const navItems = [{ label: "The event", href: "#events" }, { label: "The scene",
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [menuOpen]);
+
   const handleSpotlightMove = (event: ReactPointerEvent<HTMLElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     event.currentTarget.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
@@ -81,15 +90,17 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="site-shell">
+    <>
+      <a className="skip-link" href="#main-content">Skip to content</a>
+      <main className="site-shell" id="main-content" tabIndex={-1}>
       <div className="concept-strip"><span>●</span> INDEPENDENT WEBSITE CONCEPT <span className="strip-right">MIAMI, FL / 2026</span></div>
       <header className="masthead">
         <a className="wordmark" href="/" aria-label="UFO Music Group home">UFO<span>®</span><small>MUSIC GROUP</small></a>
         <nav className="nav-desktop" aria-label="Main navigation">{navItems.map((item) => <a key={item.label} href={item.href}>{item.label}</a>)}</nav>
         <a className="masthead-link" href="#contact">LET'S TALK <ArrowUpRight size={15} /></a>
-        <button className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+        <button className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
       </header>
-      {menuOpen && <nav className="nav-mobile" aria-label="Mobile navigation">{navItems.map((item) => <a key={item.label} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}<ArrowUpRight size={16} /></a>)}</nav>}
+      {menuOpen && <nav className="nav-mobile" id="mobile-navigation" aria-label="Mobile navigation">{navItems.map((item) => <a key={item.label} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}<ArrowUpRight size={16} /></a>)}</nav>}
 
       <section className="cover">
         <div className="cover-image" /><div className="cover-tint" /><div className="cover-grain" aria-hidden="true" />
@@ -173,6 +184,7 @@ export default function Home() {
         <div className="footer-bottom"><span>© 2026 UFO MUSIC GROUP CONCEPT</span><span>INDEPENDENT WEBSITE CONCEPT / NOT AFFILIATED</span><a href="#">BACK TO TOP ↑</a></div>
       </footer>
       <div className="custom-cursor" aria-hidden="true"><span>VIEW</span></div>
-    </main>
+      </main>
+    </>
   );
 }
