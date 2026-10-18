@@ -218,3 +218,82 @@ html.lenis{scroll-behavior:auto!important}
 @media (prefers-reduced-motion: reduce) {
   .skip-link { transition: none; }
 }
+
+
+/* Mobile hero composition and clearer touch targets */
+@media (max-width: 620px) {
+  .cover {
+    height: min(760px, calc(100svh - 96px));
+    min-height: 650px;
+  }
+  .cover-image {
+    background-position: 62% center;
+  }
+  .cover-meta {
+    left: 5%;
+    right: 5%;
+    gap: 12px;
+  }
+  .cover-meta span:last-child {
+    text-align: right;
+  }
+  .cover-title {
+    top: 49%;
+    left: 6%;
+    width: 88%;
+  }
+  .micro-label {
+    margin-left: 2px;
+    margin-bottom: 19px;
+    max-width: 220px;
+    line-height: 1.6;
+  }
+  .cover h1 {
+    font-size: clamp(67px, 15.2vw, 94px);
+    line-height: .84;
+    letter-spacing: -.09em;
+  }
+  .cover-bottomline {
+    max-width: 340px;
+    margin: 25px 0 0 2px;
+    gap: 18px;
+  }
+  .cover-bottomline p {
+    max-width: 220px;
+    font-size: 12px;
+  }
+  .cover-bottomline a {
+    flex: 0 0 44px;
+  }
+  .cover-text-link {
+    margin: 21px 0 0 2px;
+    min-height: 34px;
+    gap: 10px;
+  }
+  .cover-stamp {
+    top: 14%;
+    right: 6%;
+  }
+  .cover-footer {
+    left: 5%;
+    right: 5%;
+    bottom: 17px;
+    gap: 12px;
+    line-height: 1.5;
+  }
+  .cover-footer span:first-child {
+    max-width: 65%;
+  }
+  .cover-footer span:last-child {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .tile-arrow {
+    width: 42px;
+    height: 42px;
+  }
+  .orange-button {
+    justify-content: space-between;
+    min-height: 50px;
+  }
+}
