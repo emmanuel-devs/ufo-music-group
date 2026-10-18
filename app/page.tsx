@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type PointerEvent } from "react";
 import { ArrowDownRight, ArrowUpRight, Menu, X, Instagram, MoveUpRight } from "lucide-react";
 import Lenis from "lenis";
 
@@ -7,6 +7,12 @@ const navItems = [{ label: "The event", href: "#events" }, { label: "The scene",
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleSpotlightMove = (event: PointerEvent<HTMLElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    event.currentTarget.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
+    event.currentTarget.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
+  };
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -87,7 +93,7 @@ export default function Home() {
       {menuOpen && <nav className="nav-mobile" aria-label="Mobile navigation">{navItems.map((item) => <a key={item.label} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}<ArrowUpRight size={16} /></a>)}</nav>}
 
       <section className="cover">
-        <div className="cover-image" /><div className="cover-tint" />
+        <div className="cover-image" /><div className="cover-tint" /><div className="cover-grain" aria-hidden="true" />
         <div className="cover-meta"><span>01 / SOUND, PEOPLE, PLACE</span><span>MADE FOR THE MOMENT</span></div>
         <div className="cover-title">
           <p className="micro-label">NOT JUST ANOTHER NIGHT OUT.</p>
@@ -117,7 +123,8 @@ export default function Home() {
       <section className="events-section" id="events">
         <div className="events-top"><div><div className="section-number">03 / ON THE RADAR</div><h2>ONE TO<br /><em>REMEMBER.</em></h2></div><p>A closer look at the event shared publicly. Details shown here are a concept and should be confirmed with the organizers before going live.</p></div>
         <article className="feature-event">
-          <a className="flyer cursor-target" href="#contact" aria-label="Ask about the Dreams Do Come True event">
+          <a className="flyer cursor-target" href="#contact" aria-label="Ask about the Dreams Do Come True event" onPointerMove={handleSpotlightMove}>
+            <span className="card-glare" aria-hidden="true" />
             <div className="flyer-head"><span>UFO MUSIC GROUP × FOCUSEDDD</span><span>MIAMI BEACH / 001</span></div>
             <div className="flyer-art"><div className="flyer-disc" /><div className="flyer-type"><span>DREAMS</span><span>DO COME</span><i>TRUE.</i></div><span className="flyer-orbit">OCEAN DRIVE</span></div>
             <div className="flyer-foot"><span>LIVE MUSIC / DJ SETS</span><span>ART / FASHION / VENDORS</span></div>
@@ -139,9 +146,12 @@ export default function Home() {
       <section className="scene-section">
         <div className="scene-head"><div className="section-number">04 / THERE'S ROOM FOR YOU</div><h2>MORE THAN<br /><em>A LINEUP.</em></h2><p>The best nights bring different worlds into the same room. Artists, DJs, makers, vendors and curious people all have a part to play.</p></div>
         <div className="scene-grid">
-          <article className="scene-tile tile-one"><div className="tile-num">01 / SOUND</div><div className="tile-text"><small>ARTISTS & DJS</small><h3>Bring<br />the noise.</h3></div><span className="tile-arrow"><ArrowUpRight /></span></article>
-          <article className="scene-tile tile-two"><div className="tile-num">02 / IDEAS</div><div className="tile-text"><small>CREATORS & MAKERS</small><h3>Bring<br />your world.</h3></div><span className="tile-arrow"><ArrowUpRight /></span></article>
-          <article className="scene-tile tile-three"><div className="tile-num">03 / PEOPLE</div><div className="tile-text"><small>COME AS YOU ARE</small><h3>Find<br />your people.</h3></div><span className="tile-arrow"><ArrowUpRight /></span></article>
+          <article className="scene-tile tile-one" onPointerMove={handleSpotlightMove}>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">01 / SOUND</div><div className="tile-text"><small>ARTISTS & DJS</small><h3>Bring<br />the noise.</h3></div><span className="tile-arrow"><ArrowUpRight /></span></article>
+          <article className="scene-tile tile-two" onPointerMove={handleSpotlightMove}>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">02 / IDEAS</div><div className="tile-text"><small>CREATORS & MAKERS</small><h3>Bring<br />your world.</h3></div><span className="tile-arrow"><ArrowUpRight /></span></article>
+          <article className="scene-tile tile-three" onPointerMove={handleSpotlightMove}>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">03 / PEOPLE</div><div className="tile-text"><small>COME AS YOU ARE</small><h3>Find<br />your people.</h3></div><span className="tile-arrow"><ArrowUpRight /></span></article>
         </div>
         <p className="scene-note">A proposed direction for the site, not a confirmed artist roster or list of UFO programs.</p>
       </section>
