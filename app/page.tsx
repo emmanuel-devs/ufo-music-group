@@ -8,8 +8,31 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    const cursor = document.querySelector(".custom-cursor") as HTMLDivElement | null;
+    const finePointer = window.matchMedia("(pointer: fine)");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!cursor || !finePointer.matches || reduceMotion.matches) return;
+
+    document.body.classList.add("has-custom-cursor");
+    const moveCursor = (event: PointerEvent) => {
+      cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+      cursor.style.opacity = "1";
+      const target = event.target instanceof Element ? event.target.closest(".cursor-target") : null;
+      cursor.classList.toggle("is-active", Boolean(target));
+    };
+    const hideCursor = () => { cursor.style.opacity = "0"; cursor.classList.remove("is-active"); };
+    window.addEventListener("pointermove", moveCursor);
+    document.addEventListener("pointerleave", hideCursor);
+    return () => {
+      window.removeEventListener("pointermove", moveCursor);
+      document.removeEventListener("pointerleave", hideCursor);
+      document.body.classList.remove("has-custom-cursor");
+    };
+  }, []);
+
+  useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const targets = document.querySelectorAll(".about-editorial,.events-section,.scene-section,.contact-block,.feature-event,.scene-tile");
+    const targets = document.querySelectorAll(".about-editorial,.events-section,.scene-section,.contact-block,.events-top,.editorial-image,.flyer,.event-copy,.scene-head,.contact-top,.contact-bottom,.scene-tile");
     if (reduceMotion) {
       targets.forEach((el) => el.classList.add("is-visible"));
       return;
@@ -69,11 +92,11 @@ export default function Home() {
       <section className="events-section" id="events">
         <div className="events-top"><div><div className="section-number">03 / ON THE RADAR</div><h2>ONE TO<br /><em>REMEMBER.</em></h2></div><p>A closer look at the event shared publicly. Details shown here are a concept and should be confirmed with the organizers before going live.</p></div>
         <article className="feature-event">
-          <div className="flyer">
+          <a className="flyer cursor-target" href="#contact" aria-label="Ask about the Dreams Do Come True event">
             <div className="flyer-head"><span>UFO MUSIC GROUP × FOCUSEDDD</span><span>MIAMI BEACH / 001</span></div>
             <div className="flyer-art"><div className="flyer-disc" /><div className="flyer-type"><span>DREAMS</span><span>DO COME</span><i>TRUE.</i></div><span className="flyer-orbit">OCEAN DRIVE</span></div>
             <div className="flyer-foot"><span>LIVE MUSIC / DJ SETS</span><span>ART / FASHION / VENDORS</span></div>
-          </div>
+          </a>
           <div className="event-copy">
             <div className="event-label"><span /> FEATURED EVENT</div>
             <h3>Dreams Do<br />Come True <i>/ Ocean Drive</i></h3>
@@ -110,6 +133,7 @@ export default function Home() {
         <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">INSTAGRAM <Instagram size={14} /></a>
         <div className="footer-bottom"><span>© 2026 UFO MUSIC GROUP CONCEPT</span><span>INDEPENDENT WEBSITE CONCEPT / NOT AFFILIATED</span><a href="#">BACK TO TOP ↑</a></div>
       </footer>
+      <div className="custom-cursor" aria-hidden="true"><span>VIEW</span></div>
     </main>
   );
 }
