@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, type PointerEvent as ReactPointerEvent } from "react";
-import { ArrowDownRight, ArrowUpRight, Menu, X, Instagram, MoveUpRight } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Menu, X, Mail, MoveUpRight } from "lucide-react";
 import Lenis from "lenis";
 
 const navItems = [{ label: "The event", href: "#events" }, { label: "The scene", href: "#scene" }, { label: "Get involved", href: "#contact" }];
@@ -180,7 +180,7 @@ export default function Home() {
 
       <footer className="site-footer">
         <a className="footer-wordmark" href="#">UFO<small>MUSIC GROUP</small></a><span>MIAMI, FLORIDA</span>
-        <a href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20social%20media%20links" aria-label="Ask for UFO Music Group social media links">SOCIAL LINKS <Instagram size={14} /></a>
+        <a href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20social%20media%20links" aria-label="Email UFO Music Group">CONTACT <Mail size={14} /></a>
         <div className="footer-bottom"><span>© 2026 UFO MUSIC GROUP CONCEPT</span><span>INDEPENDENT WEBSITE CONCEPT / NOT AFFILIATED</span><a href="#">BACK TO TOP ↑</a></div>
       </footer>
       <div className="custom-cursor" aria-hidden="true"><span>VIEW</span></div>
