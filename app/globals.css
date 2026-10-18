@@ -76,7 +76,7 @@
 .custom-cursor span{font:500 9px 'DM Mono',monospace;letter-spacing:.04em;color:var(--black);opacity:0;transform:scale(.75);transition:opacity .15s ease,transform .2s ease}
 .custom-cursor.is-active{width:76px;height:76px}
 .custom-cursor.is-active span{opacity:1;transform:scale(1)}
-.has-custom-cursor,.has-custom-cursor a,.has-custom-cursor button,.has-custom-cursor .cursor-target{cursor:none}
+.has-custom-cursor,.has-custom-cursor a,.has-custom-cursor button,.has-custom-cursor .cursor-target,.has-custom-cursor [data-cursor-label]{cursor:none}
 .cursor-target{color:inherit}
 .flyer{display:flex;text-decoration:none}
 .flyer:focus-visible{outline:3px solid var(--white);outline-offset:-7px}
