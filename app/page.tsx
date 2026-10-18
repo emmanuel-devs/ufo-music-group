@@ -48,18 +48,28 @@ export default function Home() {
 
   useEffect(() => {
     const cursor = document.querySelector(".custom-cursor") as HTMLDivElement | null;
+    const cursorLabel = cursor?.querySelector("span");
     const finePointer = window.matchMedia("(pointer: fine)");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!cursor || !finePointer.matches || reduceMotion.matches) return;
+    if (!cursor || !cursorLabel || !finePointer.matches || reduceMotion.matches) return;
 
     document.body.classList.add("has-custom-cursor");
     const moveCursor = (event: PointerEvent) => {
       cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
       cursor.style.opacity = "1";
-      const target = event.target instanceof Element ? event.target.closest(".cursor-target") : null;
+      const target = event.target instanceof Element
+        ? event.target.closest("[data-cursor-label], a, button")
+        : null;
+      const label = target instanceof HTMLElement
+        ? target.dataset.cursorLabel || (target.matches("button") ? "SELECT" : "OPEN")
+        : "";
       cursor.classList.toggle("is-active", Boolean(target));
+      if (label && cursorLabel.textContent !== label) cursorLabel.textContent = label;
     };
-    const hideCursor = () => { cursor.style.opacity = "0"; cursor.classList.remove("is-active"); };
+    const hideCursor = () => {
+      cursor.style.opacity = "0";
+      cursor.classList.remove("is-active");
+    };
     window.addEventListener("pointermove", moveCursor);
     document.addEventListener("pointerleave", hideCursor);
     return () => {
@@ -128,8 +138,8 @@ export default function Home() {
         <div className="cover-title">
           <p className="micro-label">NOT JUST ANOTHER NIGHT OUT.</p>
           <h1>FIND<br /><i>YOUR</i><br />PEOPLE<span className="title-period">.</span></h1>
-          <div className="cover-bottomline"><p>Good music brings us in.<br />The people make us stay.</p><a href="#events" aria-label="Discover the featured event"><ArrowDownRight size={25} /></a></div>
-          <a className="cover-text-link" href="#scene">GET TO KNOW THE SCENE <MoveUpRight size={13} /></a>
+          <div className="cover-bottomline"><p>Good music brings us in.<br />The people make us stay.</p><a href="#events" aria-label="Discover the featured event" data-cursor-label="DISCOVER"><ArrowDownRight size={25} /></a></div>
+          <a className="cover-text-link" href="#scene" data-cursor-label="EXPLORE">GET TO KNOW THE SCENE <MoveUpRight size={13} /></a>
         </div>
         <div className="cover-stamp">UFO<br /><span>MG</span></div>
         <div className="cover-footer"><span>MIAMI / WHEREVER THE SOUND TAKES US</span><span>KEEP LOOKING ↓</span></div>
@@ -158,7 +168,7 @@ export default function Home() {
       <section className="events-section" id="events">
         <div className="events-top"><div><div className="section-number">03 / ON THE RADAR</div><h2>ONE TO<br /><em>REMEMBER.</em></h2></div><p>A closer look at the event shared publicly. Details shown here are a concept and should be confirmed with the organizers before going live.</p></div>
         <article className="feature-event">
-          <a className="flyer cursor-target" href="mailto:hello@ufomusicgroup.com?subject=Question%20about%20Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive" aria-label="Email an enquiry about the Dreams Do Come True event" onPointerMove={handleSpotlightMove}>
+          <a className="flyer cursor-target" data-cursor-label="ASK" href="mailto:hello@ufomusicgroup.com?subject=Question%20about%20Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive" aria-label="Email an enquiry about the Dreams Do Come True event" onPointerMove={handleSpotlightMove}>
             <span className="card-glare" aria-hidden="true" />
             <div className="flyer-head"><span>UFO MUSIC GROUP × FOCUSEDDD</span><span>MIAMI BEACH / 001</span></div>
             <div className="flyer-art"><div className="flyer-disc" /><div className="flyer-type"><span>DREAMS</span><span>DO COME</span><i>TRUE.</i></div><span className="flyer-orbit">OCEAN DRIVE</span></div>
@@ -172,7 +182,7 @@ export default function Home() {
               <div><small>WHEN</small><strong>January 2027</strong><span>Exact date to confirm</span></div>
               <div><small>WHERE</small><strong>Front Porch Cafe</strong><span>918 Ocean Dr, Miami Beach</span></div>
             </div>
-            <a className="orange-button" href="mailto:hello@ufomusicgroup.com?subject=Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive%20event%20enquiry&body=Hi%20UFO%20Music%20Group%2C%0A%0AI%27d%20like%20to%20ask%20about%20the%20Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive%20event.%0A%0APlease%20share%20confirmed%20event%20details%20when%20available.%0A">ASK ABOUT THIS EVENT <ArrowUpRight size={17} /></a>
+            <a className="orange-button" data-cursor-label="ENQUIRE" href="mailto:hello@ufomusicgroup.com?subject=Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive%20event%20enquiry&body=Hi%20UFO%20Music%20Group%2C%0A%0AI%27d%20like%20to%20ask%20about%20the%20Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive%20event.%0A%0APlease%20share%20confirmed%20event%20details%20when%20available.%0A">ASK ABOUT THIS EVENT <ArrowUpRight size={17} /></a>
             <p className="fine-print">Date, lineup, venue details and event status must be verified with the organizers.</p>
           </div>
         </article>
@@ -181,12 +191,12 @@ export default function Home() {
       <section className="scene-section">
         <div className="scene-head"><div className="section-number">04 / THERE'S ROOM FOR YOU</div><h2>MORE THAN<br /><em>A LINEUP.</em></h2><p>The best nights bring different worlds into the same room. Artists, DJs, makers, vendors and curious people all have a part to play.</p></div>
         <div className="scene-grid">
-          <article className="scene-tile tile-one" onPointerMove={handleSpotlightMove}>
-            <span className="card-glare" aria-hidden="true" /><div className="tile-num">01 / SOUND</div><div className="tile-text"><small>ARTISTS & DJS</small><h3>Bring<br />the noise.</h3></div><a className="tile-arrow" href="mailto:hello@ufomusicgroup.com?subject=Artist%20or%20DJ%20enquiry" aria-label="Enquire about performing as an artist or DJ"><ArrowUpRight /></a></article>
-          <article className="scene-tile tile-two" onPointerMove={handleSpotlightMove}>
-            <span className="card-glare" aria-hidden="true" /><div className="tile-num">02 / IDEAS</div><div className="tile-text"><small>CREATORS & MAKERS</small><h3>Bring<br />your world.</h3></div><a className="tile-arrow" href="mailto:hello@ufomusicgroup.com?subject=Creator%20or%20vendor%20collaboration" aria-label="Enquire about a creator or vendor collaboration"><ArrowUpRight /></a></article>
-          <article className="scene-tile tile-three" onPointerMove={handleSpotlightMove}>
-            <span className="card-glare" aria-hidden="true" /><div className="tile-num">03 / PEOPLE</div><div className="tile-text"><small>COME AS YOU ARE</small><h3>Find<br />your people.</h3></div><a className="tile-arrow" href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20updates" aria-label="Ask about upcoming UFO Music Group events"><ArrowUpRight /></a></article>
+          <article className="scene-tile tile-one" data-cursor-label="EXPLORE" onPointerMove={handleSpotlightMove}>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">01 / SOUND</div><div className="tile-text"><small>ARTISTS & DJS</small><h3>Bring<br />the noise.</h3></div><a className="tile-arrow" data-cursor-label="CONNECT" href="mailto:hello@ufomusicgroup.com?subject=Artist%20or%20DJ%20enquiry" aria-label="Enquire about performing as an artist or DJ"><ArrowUpRight /></a></article>
+          <article className="scene-tile tile-two" data-cursor-label="EXPLORE" onPointerMove={handleSpotlightMove}>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">02 / IDEAS</div><div className="tile-text"><small>CREATORS & MAKERS</small><h3>Bring<br />your world.</h3></div><a className="tile-arrow" data-cursor-label="CONNECT" href="mailto:hello@ufomusicgroup.com?subject=Creator%20or%20vendor%20collaboration" aria-label="Enquire about a creator or vendor collaboration"><ArrowUpRight /></a></article>
+          <article className="scene-tile tile-three" data-cursor-label="EXPLORE" onPointerMove={handleSpotlightMove}>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">03 / PEOPLE</div><div className="tile-text"><small>COME AS YOU ARE</small><h3>Find<br />your people.</h3></div><a className="tile-arrow" data-cursor-label="CONNECT" href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20updates" aria-label="Ask about upcoming UFO Music Group events"><ArrowUpRight /></a></article>
         </div>
         <p className="scene-note">A proposed direction for the site, not a confirmed artist roster or list of UFO programs.</p>
       </section>
