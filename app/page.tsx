@@ -7,6 +7,7 @@ const navItems = [{ label: "The event", href: "#events" }, { label: "The scene",
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [invertedMode, setInvertedMode] = useState(false);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -141,7 +142,7 @@ export default function Home() {
   return (
     <>
       <a className="skip-link" href="#main-content">Skip to content</a>
-      <main className="site-shell" id="main-content" tabIndex={-1}>
+      <main className="site-shell" id="main-content" tabIndex={-1} data-color-mode={invertedMode ? "inverted" : "default"}>
       <div className="concept-strip"><span>●</span> INDEPENDENT WEBSITE CONCEPT <span className="strip-right">MIAMI, FL / 2026</span></div>
       <header className="masthead">
         <a className="wordmark" href="/" aria-label="UFO Music Group home">UFO<span>®</span><small>MUSIC GROUP</small></a>
@@ -232,6 +233,17 @@ export default function Home() {
         <a href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20social%20media%20links" aria-label="Email UFO Music Group">CONTACT <Mail size={14} /></a>
         <div className="footer-bottom"><span>© 2026 UFO MUSIC GROUP CONCEPT</span><span>INDEPENDENT WEBSITE CONCEPT / NOT AFFILIATED</span><a href="#">BACK TO TOP ↑</a></div>
       </footer>
+      <button
+        className="theme-invert-toggle"
+        type="button"
+        aria-label={invertedMode ? "Switch to light color mode" : "Switch to inverted dark color mode"}
+        aria-pressed={invertedMode}
+        data-cursor-label={invertedMode ? "LIGHT" : "DARK"}
+        onClick={() => setInvertedMode((current) => !current)}
+      >
+        <span className="theme-toggle-indicator" aria-hidden="true" />
+        <span className="theme-toggle-label">{invertedMode ? "LIGHT MODE" : "DARK MODE"}</span>
+      </button>
       <div className="custom-cursor" aria-hidden="true"><span>VIEW</span></div>
       </main>
     </>
