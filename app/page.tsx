@@ -71,21 +71,41 @@ export default function Home() {
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const targets = document.querySelectorAll(".about-editorial,.events-section,.scene-section,.contact-block,.events-top,.editorial-image,.flyer,.event-copy,.scene-head,.contact-top,.contact-bottom,.scene-tile");
+    const selector = [
+      ".about-editorial",
+      ".events-section",
+      ".scene-section",
+      ".contact-block",
+      ".events-top",
+      ".editorial-image",
+      ".flyer",
+      ".event-copy",
+      ".scene-head",
+      ".contact-top",
+      ".contact-bottom",
+      ".scene-tile",
+    ].join(",");
+    const targets = document.querySelectorAll(selector);
+
     if (reduceMotion) {
-      targets.forEach((el) => el.classList.add("is-visible"));
+      targets.forEach((element) => element.classList.add("is-visible"));
       return;
     }
-    targets.forEach((el) => el.classList.add("motion-pending"));
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+
+    targets.forEach((element) => element.classList.add("motion-pending"));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
           entry.target.classList.add("is-visible");
           observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -35px 0px" });
-    targets.forEach((el) => observer.observe(el));
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -35px 0px" }
+    );
+
+    targets.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
   }, []);
 
