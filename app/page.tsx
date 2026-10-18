@@ -204,7 +204,7 @@ export default function Home() {
       <section className="contact-block" id="contact">
         <div className="contact-top"><span>05 / YOUR MOVE</span><span>ARTISTS · PARTNERS · GOOD IDEAS</span></div>
         <h2>GOT A GOOD<br /><em>IDEA?</em></h2>
-        <div className="contact-bottom"><p>Want to play, collaborate, bring a project or just find out what's next?</p><a href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20Enquiry&body=Hi%20UFO%20Music%20Group%2C%0A%0AI%27m%20getting%20in%20touch%20about%3A%20%5Bartist%20booking%2C%20collaboration%2C%20vendor%20opportunity%2C%20event%20details%2C%20or%20something%20else%5D.%0A%0A">LET'S START HERE <ArrowUpRight size={17} /></a></div>
+        <div className="contact-bottom"><p>Want to play, collaborate, bring a project or just find out what's next?</p><a data-cursor-label="START" href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20Enquiry&body=Hi%20UFO%20Music%20Group%2C%0A%0AI%27m%20getting%20in%20touch%20about%3A%20%5Bartist%20booking%2C%20collaboration%2C%20vendor%20opportunity%2C%20event%20details%2C%20or%20something%20else%5D.%0A%0A">LET'S START HERE <ArrowUpRight size={17} /></a></div>
         <span className="contact-disclaimer">Concept contact address. Replace with an official UFO email before publishing.</span>
       </section>
 
