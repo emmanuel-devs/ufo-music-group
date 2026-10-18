@@ -409,3 +409,53 @@ html.lenis{scroll-behavior:auto!important}
     transition-duration: .01ms !important;
   }
 }
+
+
+/* Ambient sound toggle: opt-in only, with a quiet synthesized sound bed */
+.ambient-sound-toggle {
+  position: fixed;
+  z-index: 80;
+  left: 22px;
+  bottom: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 13px;
+  border: 1px solid rgba(241,238,232,.28);
+  border-radius: 999px;
+  background: rgba(16,16,16,.9);
+  color: #f1eee8;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font: 500 9px 'DM Mono', monospace;
+  letter-spacing: .07em;
+  cursor: pointer;
+  transition: background-color .25s ease, color .25s ease, border-color .25s ease, transform .2s ease;
+}
+.ambient-sound-toggle:hover { transform: translateY(-2px); }
+.ambient-sound-toggle svg { flex: 0 0 auto; }
+.sound-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #817c75;
+  transition: background-color .25s ease, box-shadow .25s ease;
+}
+.ambient-sound-toggle.is-on .sound-status {
+  background: var(--orange);
+  box-shadow: 0 0 0 4px rgba(241,90,36,.15);
+}
+.site-shell[data-color-mode="inverted"] .ambient-sound-toggle {
+  background: rgba(241,238,232,.94);
+  color: #101010;
+  border-color: rgba(16,16,16,.24);
+}
+.ambient-sound-toggle:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
+@media (max-width: 620px) {
+  .ambient-sound-toggle { left: 14px; bottom: 14px; min-height: 40px; padding: 0 11px; gap: 7px; font-size: 8px; }
+  .theme-invert-toggle { right: 14px; bottom: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient-sound-toggle, .sound-status { transition: none; }
+}
