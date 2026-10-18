@@ -1,27 +1,38 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowDownRight, ArrowUpRight, Menu, X, Instagram } from "lucide-react";
 
 const navItems = [{label:"Events",href:"#events"},{label:"The scene",href:"#scene"},{label:"Contact",href:"#contact"}];
 
 export default function Home() {
  const [menuOpen,setMenuOpen]=useState(false);
+ useEffect(()=>{
+  const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const targets=document.querySelectorAll(".about-editorial,.events-section,.scene-section,.contact-block,.feature-event,.scene-tile");
+  if(reduceMotion){targets.forEach(el=>el.classList.add("is-visible"));return;}
+  targets.forEach(el=>el.classList.add("motion-pending"));
+  const observer=new IntersectionObserver(entries=>{
+   entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("is-visible");observer.unobserve(entry.target);}});
+  },{threshold:0.12,rootMargin:"0px 0px -35px 0px"});
+  targets.forEach(el=>observer.observe(el));
+  return ()=>observer.disconnect();
+ },[]);
  return <main className="site-shell">
   <div className="concept-strip"><span>●</span> INDEPENDENT WEBSITE CONCEPT <span className="strip-right">MIAMI, FL / 2026</span></div>
   <header className="masthead">
    <a className="wordmark" href="#" aria-label="UFO Music Group home">UFO<span>®</span><small>MUSIC GROUP</small></a>
-   <nav className="nav-desktop">{navItems.map(item=><a key={item.label} href={item.href}>{item.label}</a>)}</nav>
+   <nav className="nav-desktop" aria-label="Main navigation">{navItems.map(item=><a key={item.label} href={item.href}>{item.label}</a>)}</nav>
    <a className="masthead-link" href="#contact">GET IN TOUCH <ArrowUpRight size={15}/></a>
-   <button className="menu-toggle" aria-label={menuOpen?"Close menu":"Open menu"} onClick={()=>setMenuOpen(!menuOpen)}>{menuOpen?<X/>:<Menu/>}</button>
+   <button className="menu-toggle" aria-label={menuOpen?"Close menu":"Open menu"} aria-expanded={menuOpen} onClick={()=>setMenuOpen(!menuOpen)}>{menuOpen?<X/>:<Menu/>}</button>
   </header>
-  {menuOpen&&<nav className="nav-mobile">{navItems.map(item=><a key={item.label} href={item.href} onClick={()=>setMenuOpen(false)}>{item.label}<ArrowUpRight size={16}/></a>)}</nav>}
+  {menuOpen&&<nav className="nav-mobile" aria-label="Mobile navigation">{navItems.map(item=><a key={item.label} href={item.href} onClick={()=>setMenuOpen(false)}>{item.label}<ArrowUpRight size={16}/></a>)}</nav>}
   <section className="cover">
    <div className="cover-image"/><div className="cover-tint"/>
    <div className="cover-meta"><span>01 / SOUND & CULTURE</span><span>INDEPENDENT BY NATURE</span></div>
    <div className="cover-title"><p className="micro-label">MUSIC. PEOPLE. AFTER HOURS.</p><h1>OUT OF<br/><i>THIS</i> WORLD<span className="title-period">.</span></h1><div className="cover-bottomline"><p>A place for the music, the night<br/>and everyone who makes it.</p><a href="#events" aria-label="Explore events"><ArrowDownRight size={25}/></a></div></div>
    <div className="cover-stamp">UFO<br/><span>MG</span></div><div className="cover-footer"><span>MIAMI / EVERYWHERE</span><span>SCROLL FOR WHAT'S NEXT ↓</span></div>
   </section>
-  <section className="ticker"><div>GOOD MUSIC <b>✳</b> GOOD PEOPLE <b>✳</b> NO FIXED ORBIT <b>✳</b> GOOD MUSIC <b>✳</b> GOOD PEOPLE <b>✳</b> NO FIXED ORBIT <b>✳</b></div></section>
+  <section className="ticker" aria-label="UFO Music Group themes"><div>GOOD MUSIC <b>✳</b> GOOD PEOPLE <b>✳</b> NO FIXED ORBIT <b>✳</b> GOOD MUSIC <b>✳</b> GOOD PEOPLE <b>✳</b> NO FIXED ORBIT <b>✳</b></div></section>
   <section className="about-editorial" id="scene"><div className="editorial-index">02 / THE POINT</div><div className="editorial-main"><h2>THE NIGHT<br/>IS <em>YOUNG.</em></h2><div className="editorial-aside"><span className="orange-rule"/><p>Good nights don't happen by accident. They come from the right sound system, the right room and people who came to be part of something.</p><p>This concept gives UFO Music Group a home for events, collaborators and whatever comes next.</p><span className="small-note">A PROPOSED DIGITAL DIRECTION</span></div></div><div className="editorial-image"><div className="image-caption"><span>AFTER DARK</span><span>NO TWO NIGHTS ALIKE</span></div></div></section>
   <section className="events-section" id="events"><div className="events-top"><div><div className="section-number">03 / ON THE CALENDAR</div><h2>THE NEXT<br/><em>ONE.</em></h2></div><p>One event concept, built around the details shared publicly. Confirm the date and lineup with the organizers before publishing.</p></div>
    <article className="feature-event"><div className="flyer"><div className="flyer-head"><span>UFO MUSIC GROUP × FOCUSEDDD</span><span>MIAMI BEACH / 001</span></div><div className="flyer-art"><div className="flyer-disc"/><div className="flyer-type"><span>DREAMS</span><span>DO COME</span><i>TRUE.</i></div><span className="flyer-orbit">OCEAN DRIVE</span></div><div className="flyer-foot"><span>LIVE MUSIC / DJ SETS</span><span>ART / FASHION / VENDORS</span></div></div>
