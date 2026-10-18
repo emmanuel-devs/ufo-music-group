@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState, type PointerEvent as ReactPointerEvent } from "react";
-import { ArrowDownRight, ArrowUpRight, Menu, X, Mail, MoveUpRight } from "lucide-react";
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { ArrowDownRight, ArrowUpRight, Menu, X, Mail, MoveUpRight, Volume2, VolumeX } from "lucide-react";
 import Lenis from "lenis";
 
 const navItems = [{ label: "The event", href: "#events" }, { label: "The scene", href: "#scene" }, { label: "Get involved", href: "#contact" }];
@@ -8,6 +8,10 @@ const navItems = [{ label: "The event", href: "#events" }, { label: "The scene",
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [invertedMode, setInvertedMode] = useState(false);
+  const [ambientOn, setAmbientOn] = useState(false);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const ambientNodesRef = useRef<OscillatorNode[]>([]);
+  const ambientGainRef = useRef<GainNode | null>(null);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -17,6 +21,59 @@ export default function Home() {
     document.addEventListener("keydown", closeOnEscape);
     return () => document.removeEventListener("keydown", closeOnEscape);
   }, [menuOpen]);
+
+  const toggleAmbientSound = async () => {
+    const existingContext = audioContextRef.current;
+    const existingGain = ambientGainRef.current;
+    if (existingContext && existingGain) {
+      existingGain.gain.setTargetAtTime(0, existingContext.currentTime, 0.18);
+      ambientNodesRef.current.forEach((node) => {
+        try { node.stop(existingContext.currentTime + 0.8); } catch {}
+      });
+      ambientNodesRef.current = [];
+      audioContextRef.current = null;
+      ambientGainRef.current = null;
+      setAmbientOn(false);
+      window.setTimeout(() => { void existingContext.close(); }, 900);
+      return;
+    }
+
+    try {
+      const context = new window.AudioContext();
+      await context.resume();
+      const master = context.createGain();
+      master.gain.setValueAtTime(0.0001, context.currentTime);
+      master.gain.setTargetAtTime(0.065, context.currentTime, 1.1);
+      master.connect(context.destination);
+      const nodes = [
+        { frequency: 55, volume: 0.24, detune: -3 },
+        { frequency: 82.41, volume: 0.16, detune: 2 },
+        { frequency: 110, volume: 0.09, detune: -2 },
+      ].map(({ frequency, volume, detune }) => {
+        const oscillator = context.createOscillator();
+        const level = context.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = frequency;
+        oscillator.detune.value = detune;
+        level.gain.value = volume;
+        oscillator.connect(level);
+        level.connect(master);
+        oscillator.start();
+        return oscillator;
+      });
+      audioContextRef.current = context;
+      ambientNodesRef.current = nodes;
+      ambientGainRef.current = master;
+      setAmbientOn(true);
+    } catch {
+      setAmbientOn(false);
+    }
+  };
+
+  useEffect(() => () => {
+    ambientNodesRef.current.forEach((node) => { try { node.stop(); } catch {} });
+    if (audioContextRef.current) void audioContextRef.current.close();
+  }, []);
 
   const handleSpotlightMove = (event: ReactPointerEvent<HTMLElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -233,6 +290,18 @@ export default function Home() {
         <a href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20social%20media%20links" aria-label="Email UFO Music Group">CONTACT <Mail size={14} /></a>
         <div className="footer-bottom"><span>© 2026 UFO MUSIC GROUP CONCEPT</span><span>INDEPENDENT WEBSITE CONCEPT / NOT AFFILIATED</span><a href="#">BACK TO TOP ↑</a></div>
       </footer>
+      <button
+        className={`ambient-sound-toggle${ambientOn ? " is-on" : ""}`}
+        type="button"
+        aria-label={ambientOn ? "Turn ambient sound off" : "Turn ambient sound on"}
+        aria-pressed={ambientOn}
+        data-cursor-label={ambientOn ? "MUTE" : "SOUND"}
+        onClick={toggleAmbientSound}
+      >
+        {ambientOn ? <Volume2 size={15} aria-hidden="true" /> : <VolumeX size={15} aria-hidden="true" />}
+        <span>{ambientOn ? "SOUND ON" : "AMBIENT SOUND"}</span>
+        <span className="sound-status" aria-hidden="true" />
+      </button>
       <button
         className="theme-invert-toggle"
         type="button"
