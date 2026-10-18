@@ -23,6 +23,25 @@ export default function Home() {
     event.currentTarget.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
   };
 
+  const handleMagneticMove = (event: ReactPointerEvent<HTMLElement>) => {
+    if (window.matchMedia("(pointer: coarse)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const target = event.currentTarget;
+    const bounds = target.getBoundingClientRect();
+    const offsetX = event.clientX - (bounds.left + bounds.width / 2);
+    const offsetY = event.clientY - (bounds.top + bounds.height / 2);
+    const strength = 0.18;
+    const maxOffset = 8;
+    const x = Math.max(-maxOffset, Math.min(maxOffset, offsetX * strength));
+    const y = Math.max(-maxOffset, Math.min(maxOffset, offsetY * strength));
+    target.style.setProperty("--magnetic-x", `${x.toFixed(2)}px`);
+    target.style.setProperty("--magnetic-y", `${y.toFixed(2)}px`);
+  };
+
+  const resetMagneticMove = (event: ReactPointerEvent<HTMLElement>) => {
+    event.currentTarget.style.setProperty("--magnetic-x", "0px");
+    event.currentTarget.style.setProperty("--magnetic-y", "0px");
+  };
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -127,7 +146,7 @@ export default function Home() {
       <header className="masthead">
         <a className="wordmark" href="/" aria-label="UFO Music Group home">UFO<span>®</span><small>MUSIC GROUP</small></a>
         <nav className="nav-desktop" aria-label="Main navigation">{navItems.map((item) => <a key={item.label} href={item.href}>{item.label}</a>)}</nav>
-        <a className="masthead-link" href="#contact">LET'S TALK <ArrowUpRight size={15} /></a>
+        <a className="masthead-link magnetic-target" href="#contact" onPointerMove={handleMagneticMove} onPointerLeave={resetMagneticMove}>LET'S TALK <ArrowUpRight size={15} /></a>
         <button className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
       </header>
       {menuOpen && <nav className="nav-mobile" id="mobile-navigation" aria-label="Mobile navigation">{navItems.map((item) => <a key={item.label} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}<ArrowUpRight size={16} /></a>)}</nav>}
@@ -138,8 +157,8 @@ export default function Home() {
         <div className="cover-title">
           <p className="micro-label">NOT JUST ANOTHER NIGHT OUT.</p>
           <h1>FIND<br /><i>YOUR</i><br />PEOPLE<span className="title-period">.</span></h1>
-          <div className="cover-bottomline"><p>Good music brings us in.<br />The people make us stay.</p><a href="#events" aria-label="Discover the featured event" data-cursor-label="DISCOVER"><ArrowDownRight size={25} /></a></div>
-          <a className="cover-text-link" href="#scene" data-cursor-label="EXPLORE">GET TO KNOW THE SCENE <MoveUpRight size={13} /></a>
+          <div className="cover-bottomline"><p>Good music brings us in.<br />The people make us stay.</p><a className="magnetic-target" href="#events" aria-label="Discover the featured event" data-cursor-label="DISCOVER" onPointerMove={handleMagneticMove} onPointerLeave={resetMagneticMove}><ArrowDownRight size={25} /></a></div>
+          <a className="cover-text-link magnetic-target" href="#scene" data-cursor-label="EXPLORE" onPointerMove={handleMagneticMove} onPointerLeave={resetMagneticMove}>GET TO KNOW THE SCENE <MoveUpRight size={13} /></a>
         </div>
         <div className="cover-stamp">UFO<br /><span>MG</span></div>
         <div className="cover-footer"><span>MIAMI / WHEREVER THE SOUND TAKES US</span><span>KEEP LOOKING ↓</span></div>
@@ -182,7 +201,7 @@ export default function Home() {
               <div><small>WHEN</small><strong>January 2027</strong><span>Exact date to confirm</span></div>
               <div><small>WHERE</small><strong>Front Porch Cafe</strong><span>918 Ocean Dr, Miami Beach</span></div>
             </div>
-            <a className="orange-button" data-cursor-label="ENQUIRE" href="mailto:hello@ufomusicgroup.com?subject=Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive%20event%20enquiry&body=Hi%20UFO%20Music%20Group%2C%0A%0AI%27d%20like%20to%20ask%20about%20the%20Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive%20event.%0A%0APlease%20share%20confirmed%20event%20details%20when%20available.%0A">ASK ABOUT THIS EVENT <ArrowUpRight size={17} /></a>
+            <a className="orange-button magnetic-target" data-cursor-label="ENQUIRE" onPointerMove={handleMagneticMove} onPointerLeave={resetMagneticMove} href="mailto:hello@ufomusicgroup.com?subject=Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive%20event%20enquiry&body=Hi%20UFO%20Music%20Group%2C%0A%0AI%27d%20like%20to%20ask%20about%20the%20Dreams%20Do%20Come%20True%20%2F%20Ocean%20Drive%20event.%0A%0APlease%20share%20confirmed%20event%20details%20when%20available.%0A">ASK ABOUT THIS EVENT <ArrowUpRight size={17} /></a>
             <p className="fine-print">Date, lineup, venue details and event status must be verified with the organizers.</p>
           </div>
         </article>
@@ -192,11 +211,11 @@ export default function Home() {
         <div className="scene-head"><div className="section-number">04 / THERE'S ROOM FOR YOU</div><h2>MORE THAN<br /><em>A LINEUP.</em></h2><p>The best nights bring different worlds into the same room. Artists, DJs, makers, vendors and curious people all have a part to play.</p></div>
         <div className="scene-grid">
           <article className="scene-tile tile-one" data-cursor-label="EXPLORE" onPointerMove={handleSpotlightMove}>
-            <span className="card-glare" aria-hidden="true" /><div className="tile-num">01 / SOUND</div><div className="tile-text"><small>ARTISTS & DJS</small><h3>Bring<br />the noise.</h3></div><a className="tile-arrow" data-cursor-label="CONNECT" href="mailto:hello@ufomusicgroup.com?subject=Artist%20or%20DJ%20enquiry" aria-label="Enquire about performing as an artist or DJ"><ArrowUpRight /></a></article>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">01 / SOUND</div><div className="tile-text"><small>ARTISTS & DJS</small><h3>Bring<br />the noise.</h3></div><a className="tile-arrow magnetic-target" data-cursor-label="CONNECT" href="mailto:hello@ufomusicgroup.com?subject=Artist%20or%20DJ%20enquiry" onPointerMove={handleMagneticMove} onPointerLeave={resetMagneticMove} aria-label="Enquire about performing as an artist or DJ"><ArrowUpRight /></a></article>
           <article className="scene-tile tile-two" data-cursor-label="EXPLORE" onPointerMove={handleSpotlightMove}>
-            <span className="card-glare" aria-hidden="true" /><div className="tile-num">02 / IDEAS</div><div className="tile-text"><small>CREATORS & MAKERS</small><h3>Bring<br />your world.</h3></div><a className="tile-arrow" data-cursor-label="CONNECT" href="mailto:hello@ufomusicgroup.com?subject=Creator%20or%20vendor%20collaboration" aria-label="Enquire about a creator or vendor collaboration"><ArrowUpRight /></a></article>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">02 / IDEAS</div><div className="tile-text"><small>CREATORS & MAKERS</small><h3>Bring<br />your world.</h3></div><a className="tile-arrow magnetic-target" data-cursor-label="CONNECT" href="mailto:hello@ufomusicgroup.com?subject=Creator%20or%20vendor%20collaboration" onPointerMove={handleMagneticMove} onPointerLeave={resetMagneticMove} aria-label="Enquire about a creator or vendor collaboration"><ArrowUpRight /></a></article>
           <article className="scene-tile tile-three" data-cursor-label="EXPLORE" onPointerMove={handleSpotlightMove}>
-            <span className="card-glare" aria-hidden="true" /><div className="tile-num">03 / PEOPLE</div><div className="tile-text"><small>COME AS YOU ARE</small><h3>Find<br />your people.</h3></div><a className="tile-arrow" data-cursor-label="CONNECT" href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20updates" aria-label="Ask about upcoming UFO Music Group events"><ArrowUpRight /></a></article>
+            <span className="card-glare" aria-hidden="true" /><div className="tile-num">03 / PEOPLE</div><div className="tile-text"><small>COME AS YOU ARE</small><h3>Find<br />your people.</h3></div><a className="tile-arrow magnetic-target" data-cursor-label="CONNECT" href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20updates" onPointerMove={handleMagneticMove} onPointerLeave={resetMagneticMove} aria-label="Ask about upcoming UFO Music Group events"><ArrowUpRight /></a></article>
         </div>
         <p className="scene-note">A proposed direction for the site, not a confirmed artist roster or list of UFO programs.</p>
       </section>
@@ -204,7 +223,7 @@ export default function Home() {
       <section className="contact-block" id="contact">
         <div className="contact-top"><span>05 / YOUR MOVE</span><span>ARTISTS · PARTNERS · GOOD IDEAS</span></div>
         <h2>GOT A GOOD<br /><em>IDEA?</em></h2>
-        <div className="contact-bottom"><p>Want to play, collaborate, bring a project or just find out what's next?</p><a data-cursor-label="START" href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20Enquiry&body=Hi%20UFO%20Music%20Group%2C%0A%0AI%27m%20getting%20in%20touch%20about%3A%20%5Bartist%20booking%2C%20collaboration%2C%20vendor%20opportunity%2C%20event%20details%2C%20or%20something%20else%5D.%0A%0A">LET'S START HERE <ArrowUpRight size={17} /></a></div>
+        <div className="contact-bottom"><p>Want to play, collaborate, bring a project or just find out what's next?</p><a className="magnetic-target" data-cursor-label="START" onPointerMove={handleMagneticMove} onPointerLeave={resetMagneticMove} href="mailto:hello@ufomusicgroup.com?subject=UFO%20Music%20Group%20Enquiry&body=Hi%20UFO%20Music%20Group%2C%0A%0AI%27m%20getting%20in%20touch%20about%3A%20%5Bartist%20booking%2C%20collaboration%2C%20vendor%20opportunity%2C%20event%20details%2C%20or%20something%20else%5D.%0A%0A">LET'S START HERE <ArrowUpRight size={17} /></a></div>
         <span className="contact-disclaimer">Concept contact address. Replace with an official UFO email before publishing.</span>
       </section>
 
