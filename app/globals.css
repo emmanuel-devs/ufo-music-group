@@ -297,3 +297,25 @@ html.lenis{scroll-behavior:auto!important}
     min-height: 50px;
   }
 }
+
+
+/* Magnetic interaction: small pointer-led movement without fighting existing transforms */
+.magnetic-target {
+  --magnetic-x: 0px;
+  --magnetic-y: 0px;
+  translate: var(--magnetic-x) var(--magnetic-y);
+  transition: translate .2s cubic-bezier(.2,.7,.2,1);
+  will-change: translate;
+}
+@media (hover: hover) and (pointer: fine) {
+  .magnetic-target:hover {
+    transition-duration: .12s;
+  }
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .magnetic-target {
+    translate: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+}
