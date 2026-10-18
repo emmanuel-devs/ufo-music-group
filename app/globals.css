@@ -158,3 +158,29 @@ html.lenis{scroll-behavior:auto!important}
   .cover-grain { animation: none; }
   .card-glare { transition: none; }
 }
+
+
+/* Continuous ticker marquee */
+.ticker { position: relative; }
+.ticker-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: ticker-marquee 28s linear infinite;
+}
+.ticker-content {
+  display: block;
+  flex: 0 0 auto;
+  padding-right: 12px;
+}
+@keyframes ticker-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; transform: none; }
+  .ticker-content[aria-hidden="true"] { display: none; }
+}
