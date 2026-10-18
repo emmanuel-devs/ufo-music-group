@@ -105,7 +105,12 @@ export default function Home() {
         <div className="cover-footer"><span>MIAMI / WHEREVER THE SOUND TAKES US</span><span>KEEP LOOKING ↓</span></div>
       </section>
 
-      <section className="ticker" aria-label="UFO Music Group themes"><div>COME FOR THE SOUND <b>✳</b> STAY FOR THE PEOPLE <b>✳</b> MAKE A NIGHT OF IT <b>✳</b> COME FOR THE SOUND <b>✳</b> STAY FOR THE PEOPLE <b>✳</b> MAKE A NIGHT OF IT <b>✳</b></div></section>
+      <section className="ticker" aria-label="UFO Music Group themes">
+        <div className="ticker-track">
+          <span className="ticker-content">COME FOR THE SOUND <b>✳</b> STAY FOR THE PEOPLE <b>✳</b> MAKE A NIGHT OF IT <b>✳</b></span>
+          <span className="ticker-content" aria-hidden="true">COME FOR THE SOUND <b>✳</b> STAY FOR THE PEOPLE <b>✳</b> MAKE A NIGHT OF IT <b>✳</b></span>
+        </div>
+      </section>
 
       <section className="about-editorial" id="scene">
         <div className="editorial-index">02 / WHAT MAKES IT</div>
