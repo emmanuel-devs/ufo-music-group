@@ -42,3 +42,29 @@
  .motion-pending{opacity:1!important;transform:none!important}
  .cover-image{transform:none}
 }
+
+
+/* Refinements for the event-led creative direction */
+.cover-title{top:48%;width:88%}
+.cover h1{font-size:clamp(82px,12.4vw,174px);line-height:.78}
+.cover h1 i{color:var(--orange)}
+.cover-bottomline{margin-top:29px}
+.cover-text-link{display:inline-flex;align-items:center;gap:12px;margin:24px 0 0 5px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.55);font:500 8px 'DM Mono',monospace;letter-spacing:.12em;color:rgba(255,255,255,.82);transition:color .2s ease,border-color .2s ease}
+.cover-text-link:hover{color:var(--orange);border-color:var(--orange)}
+.editorial-main h2{max-width:800px;font-size:clamp(58px,8.3vw,116px)}
+.editorial-main h2 em{display:inline-block}
+.events-top h2{font-size:clamp(65px,8.9vw,124px)}
+.scene-head h2{font-size:clamp(63px,8.4vw,116px)}
+.contact-block h2{font-size:clamp(68px,11vw,154px)}
+@media(max-width:850px){.cover h1{font-size:clamp(78px,12.8vw,115px)}.editorial-main h2{font-size:clamp(58px,8.4vw,78px)}}
+@media(max-width:620px){
+ .cover-title{top:47%;width:92%}
+ .cover h1{font-size:clamp(68px,15.6vw,100px);line-height:.82}
+ .cover-text-link{margin-top:19px;font-size:7px}
+ .cover-bottomline{margin-top:22px}
+ .editorial-main h2{font-size:clamp(52px,12vw,76px);line-height:.84}
+ .events-top h2{font-size:clamp(65px,13.8vw,90px)}
+ .scene-head h2{font-size:clamp(60px,13vw,86px)}
+ .contact-block h2{font-size:clamp(64px,13vw,82px)}
+}
+@media(prefers-reduced-motion:reduce){.cover-text-link{transition:none}}
