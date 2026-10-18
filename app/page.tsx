@@ -1,11 +1,36 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ArrowDownRight, ArrowUpRight, Menu, X, Instagram, MoveUpRight } from "lucide-react";
+import Lenis from "lenis";
 
 const navItems = [{ label: "The event", href: "#events" }, { label: "The scene", href: "#scene" }, { label: "Get involved", href: "#contact" }];
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const lenis = new Lenis({
+      duration: 1.05,
+      smoothWheel: true,
+      smoothTouch: false,
+      anchors: true,
+      wheelMultiplier: 0.9,
+    });
+
+    let frame = 0;
+    const raf = (time: number) => {
+      lenis.raf(time);
+      frame = window.requestAnimationFrame(raf);
+    };
+    frame = window.requestAnimationFrame(raf);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      lenis.destroy();
+    };
+  }, []);
 
   useEffect(() => {
     const cursor = document.querySelector(".custom-cursor") as HTMLDivElement | null;
