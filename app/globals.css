@@ -109,3 +109,52 @@ html.lenis{scroll-behavior:auto!important}
 @media(prefers-reduced-motion:reduce){
   html.lenis,html.lenis body{scroll-behavior:auto!important}
 }
+
+
+/* Tactile analog grain and pointer-following card glare */
+.cover-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: .12;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  animation: grain-drift .28s steps(2) infinite;
+}
+.cover-meta,.cover-title,.cover-stamp,.cover-footer { z-index: 2; }
+@keyframes grain-drift {
+  0% { background-position: 0 0; }
+  25% { background-position: -20px 10px; }
+  50% { background-position: 12px -18px; }
+  75% { background-position: 22px 8px; }
+  100% { background-position: 0 0; }
+}
+.flyer,.scene-tile { --pointer-x: 50%; --pointer-y: 50%; }
+.flyer-art { z-index: 2; }
+.scene-tile:before { z-index: 0; }
+.scene-tile:after { z-index: 0; }
+.scene-tile .tile-num,.scene-tile .tile-text,.scene-tile .tile-arrow { z-index: 2; }
+.card-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    290px circle at var(--pointer-x) var(--pointer-y),
+    rgba(255,255,255,.17) 0%,
+    rgba(241,90,36,.13) 28%,
+    rgba(241,90,36,.045) 48%,
+    transparent 72%
+  );
+  transition: opacity .28s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .flyer:hover .card-glare,.scene-tile:hover .card-glare { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cover-grain { animation: none; }
+  .card-glare { transition: none; }
+}
