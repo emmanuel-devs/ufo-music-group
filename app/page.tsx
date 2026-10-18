@@ -79,7 +79,7 @@ export default function Home() {
     <main className="site-shell">
       <div className="concept-strip"><span>●</span> INDEPENDENT WEBSITE CONCEPT <span className="strip-right">MIAMI, FL / 2026</span></div>
       <header className="masthead">
-        <a className="wordmark" href="#" aria-label="UFO Music Group home">UFO<span>®</span><small>MUSIC GROUP</small></a>
+        <a className="wordmark" href="/" aria-label="UFO Music Group home">UFO<span>®</span><small>MUSIC GROUP</small></a>
         <nav className="nav-desktop" aria-label="Main navigation">{navItems.map((item) => <a key={item.label} href={item.href}>{item.label}</a>)}</nav>
         <a className="masthead-link" href="#contact">LET'S TALK <ArrowUpRight size={15} /></a>
         <button className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
