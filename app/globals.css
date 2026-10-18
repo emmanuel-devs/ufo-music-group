@@ -69,3 +69,36 @@
 }
 @media(prefers-reduced-motion:reduce){.cover-text-link{transition:none}}
 
+
+
+/* Signature cursor: desktop only, never replaces touch or keyboard navigation */
+.custom-cursor{position:fixed;left:0;top:0;z-index:1000;width:12px;height:12px;border-radius:50%;background:var(--orange);pointer-events:none;opacity:0;display:grid;place-items:center;transform:translate3d(-100px,-100px,0);transition:width .22s cubic-bezier(.2,.7,.2,1),height .22s cubic-bezier(.2,.7,.2,1),opacity .18s ease;will-change:transform,width,height}
+.custom-cursor span{font:500 9px 'DM Mono',monospace;letter-spacing:.04em;color:var(--black);opacity:0;transform:scale(.75);transition:opacity .15s ease,transform .2s ease}
+.custom-cursor.is-active{width:76px;height:76px}
+.custom-cursor.is-active span{opacity:1;transform:scale(1)}
+.has-custom-cursor,.has-custom-cursor a,.has-custom-cursor button,.has-custom-cursor .cursor-target{cursor:none}
+.cursor-target{color:inherit}
+.flyer{display:flex;text-decoration:none}
+.flyer:focus-visible{outline:3px solid var(--white);outline-offset:-7px}
+@media(hover:none),(pointer:coarse){.custom-cursor{display:none}}
+@media(prefers-reduced-motion:reduce){.custom-cursor{display:none!important}}
+
+/* More considered editorial reveals, with the artwork and copy arriving separately */
+.cover-title{animation:cover-title-arrive .8s .16s both cubic-bezier(.2,.7,.2,1)}
+@keyframes cover-title-arrive{
+  from{opacity:0;transform:translate3d(0,calc(-50% + 22px),0)}
+  to{opacity:1;transform:translate3d(0,-50%,0)}
+}
+.editorial-image.motion-pending{transition-delay:100ms}
+.events-top.motion-pending{transition-delay:40ms}
+.flyer.motion-pending{transition-delay:50ms}
+.event-copy.motion-pending{transition-delay:150ms}
+.scene-head.motion-pending{transition-delay:40ms}
+.contact-bottom.motion-pending{transition-delay:100ms}
+@media(max-width:620px){
+  .custom-cursor{display:none}
+  .flyer{min-height:420px}
+}
+@media(prefers-reduced-motion:reduce){
+  .cover-title{animation:none;opacity:1;transform:translateY(-50%)}
+}
