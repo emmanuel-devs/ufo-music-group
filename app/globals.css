@@ -469,17 +469,17 @@ html.lenis{scroll-behavior:auto!important}
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 38%;
+  height: 42%;
   pointer-events: none;
-  opacity: .38;
+  opacity: .72;
   mix-blend-mode: screen;
   transition: opacity .7s ease;
 }
-.audio-reactive-canvas.is-active { opacity: .82; }
+.audio-reactive-canvas.is-active { opacity: 1; }
 .cover-meta,.cover-title,.cover-stamp,.cover-footer { z-index: 3; }
 @media (max-width: 620px) {
-  .audio-reactive-canvas { height: 30%; opacity: .25; }
-  .audio-reactive-canvas.is-active { opacity: .68; }
+  .audio-reactive-canvas { height: 36%; opacity: .72; }
+  .audio-reactive-canvas.is-active { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   .audio-reactive-canvas { transition: none; }
