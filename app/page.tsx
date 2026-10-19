@@ -108,29 +108,34 @@ export default function Home() {
       if (ambientOn && analyser) analyser.getByteFrequencyData(frequencies);
       else frequencies.fill(0);
 
-      const baseline = height * 0.72;
+      const baseline = height * 0.64;
       const center = width * 0.5;
       const maxRadius = Math.min(width * 0.42, height * 0.76);
       const active = ambientOn && Boolean(analyser);
       context.save();
-      context.globalAlpha = active ? 0.78 : 0.12;
-      context.strokeStyle = "#f15a24";
-      context.lineWidth = 1;
+      context.strokeStyle = "#ff6a2a";
+      context.lineWidth = 1.35;
+      context.shadowColor = "#ff6a2a";
+      context.shadowBlur = active ? 8 : 2;
+      context.globalAlpha = active ? 0.96 : 0.42;
       context.beginPath();
       for (let i = 0; i <= bars; i++) {
         const x = (i / bars) * width;
-        const sample = active ? frequencies[Math.min(127, Math.floor(i / bars * 127))] / 255 : 0;
-        const wave = Math.sin(i * 0.48) * 2.5;
-        const amplitude = active ? sample * 20 : 1.5;
-        const y = baseline - Math.abs(Math.sin((i / bars) * Math.PI)) * (amplitude + wave);
+        const bin = Math.min(12, Math.max(1, Math.floor(i / bars * 13)));
+        const sample = active ? frequencies[bin] / 255 : 0;
+        const envelope = Math.sin((i / bars) * Math.PI);
+        const idleWave = 4 + Math.sin(i * 0.31) * 2;
+        const amplitude = active ? 7 + sample * 30 : idleWave;
+        const y = baseline - envelope * amplitude;
         if (i === 0) context.moveTo(x, y);
         else context.lineTo(x, y);
       }
       context.stroke();
 
-      context.globalAlpha = active ? 0.26 : 0.06;
+      context.shadowBlur = 0;
+      context.globalAlpha = active ? 0.34 : 0.16;
       context.beginPath();
-      context.ellipse(center, baseline - 10, maxRadius * (active ? 0.82 : 0.74), maxRadius * 0.2, 0, Math.PI, Math.PI * 2);
+      context.ellipse(center, baseline + 6, maxRadius * (active ? 0.82 : 0.74), maxRadius * 0.2, 0, Math.PI, Math.PI * 2);
       context.stroke();
       context.restore();
       frame = window.requestAnimationFrame(draw);
@@ -281,6 +286,7 @@ export default function Home() {
       {menuOpen && <nav className="nav-mobile" id="mobile-navigation" aria-label="Mobile navigation">{navItems.map((item) => <a key={item.label} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}<ArrowUpRight size={16} /></a>)}</nav>}
 
       <section className="cover">
+        <canvas ref={visualizerCanvasRef} className={`audio-reactive-canvas${ambientOn ? " is-active" : ""}`} aria-hidden="true" />
         <div className="cover-image" /><div className="cover-tint" /><div className="cover-grain" aria-hidden="true" />
         <div className="cover-meta"><span>01 / SOUND, PEOPLE, PLACE</span><span>MADE FOR THE MOMENT</span></div>
         <div className="cover-title">
