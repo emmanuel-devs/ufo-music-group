@@ -2,25 +2,37 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 const siteUrl = "https://ufo-music-group.vercel.app";
-const siteTitle = "UFO Music Group | Music, Events & Creative Culture";
+const siteTitle = "UFO Music Group Website Concept | Music, Events & Culture";
 const siteDescription =
-  "Explore an independent website concept for UFO Music Group, bringing together live music, DJs, artists, creative collaborations and culture. This concept is not an official site.";
+  "An independent website concept for UFO Music Group, exploring music, live events, artists and creative culture. A speculative portfolio project, not an official or affiliated website.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: siteTitle,
-    template: "%s | UFO Music Group",
+    template: "%s | UFO Music Group Concept",
   },
   description: siteDescription,
-  applicationName: "UFO Music Group Concept",
+  applicationName: "UFO Music Group Website Concept",
+  keywords: [
+    "UFO Music Group",
+    "music website concept",
+    "live music",
+    "music events",
+    "DJ events",
+    "creative culture",
+    "website design portfolio",
+  ],
+  category: "music",
+  creator: "Independent website concept",
+  publisher: "Independent website concept",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     url: siteUrl,
-    siteName: "UFO Music Group",
+    siteName: "UFO Music Group Website Concept",
     title: siteTitle,
     description: siteDescription,
     locale: "en_US",
@@ -29,7 +41,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "UFO Music Group concept: music, events and creative culture",
+        alt: "UFO Music Group independent website concept for music, events and creative culture",
       },
     ],
   },
