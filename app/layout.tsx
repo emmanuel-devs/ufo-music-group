@@ -4,7 +4,7 @@ import "./globals.css";
 const siteUrl = "https://ufo-music-group.vercel.app";
 const siteTitle = "UFO Music Group Website Concept | Music, Events & Culture";
 const siteDescription =
-  "An independent website concept for UFO Music Group, exploring music, live events, artists and creative culture. A speculative portfolio project, not an official or affiliated website.";
+  "Independent website concept exploring UFO Music Group, live music, events, artists and creative culture. Portfolio project, not an official or affiliated website.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -71,6 +71,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+      </head>
       <body>{children}</body>
     </html>
   );
