@@ -12,6 +12,8 @@ export default function Home() {
   const audioContextRef = useRef<AudioContext | null>(null);
   const ambientNodesRef = useRef<OscillatorNode[]>([]);
   const ambientGainRef = useRef<GainNode | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const visualizerCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -33,6 +35,7 @@ export default function Home() {
       ambientNodesRef.current = [];
       audioContextRef.current = null;
       ambientGainRef.current = null;
+      analyserRef.current = null;
       setAmbientOn(false);
       window.setTimeout(() => { void existingContext.close(); }, 900);
       return;
@@ -44,7 +47,11 @@ export default function Home() {
       const master = context.createGain();
       master.gain.setValueAtTime(0.0001, context.currentTime);
       master.gain.setTargetAtTime(0.065, context.currentTime, 1.1);
-      master.connect(context.destination);
+      const analyser = context.createAnalyser();
+      analyser.fftSize = 256;
+      analyser.smoothingTimeConstant = 0.86;
+      master.connect(analyser);
+      analyser.connect(context.destination);
       const nodes = [
         { frequency: 55, volume: 0.24, detune: -3 },
         { frequency: 82.41, volume: 0.16, detune: 2 },
@@ -64,6 +71,7 @@ export default function Home() {
       audioContextRef.current = context;
       ambientNodesRef.current = nodes;
       ambientGainRef.current = master;
+      analyserRef.current = analyser;
       setAmbientOn(true);
     } catch {
       setAmbientOn(false);
@@ -74,6 +82,69 @@ export default function Home() {
     ambientNodesRef.current.forEach((node) => { try { node.stop(); } catch {} });
     if (audioContextRef.current) void audioContextRef.current.close();
   }, []);
+
+  useEffect(() => {
+    const canvas = visualizerCanvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (!canvas || !context) return;
+
+    let frame = 0;
+    let width = 0;
+    let height = 0;
+    const bars = 56;
+    const frequencies = new Uint8Array(128);
+    const resize = () => {
+      const bounds = canvas.getBoundingClientRect();
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = bounds.width;
+      height = bounds.height;
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    };
+    const draw = () => {
+      context.clearRect(0, 0, width, height);
+      const analyser = analyserRef.current;
+      if (ambientOn && analyser) analyser.getByteFrequencyData(frequencies);
+      else frequencies.fill(0);
+
+      const baseline = height * 0.72;
+      const center = width * 0.5;
+      const maxRadius = Math.min(width * 0.42, height * 0.76);
+      const active = ambientOn && Boolean(analyser);
+      context.save();
+      context.globalAlpha = active ? 0.78 : 0.12;
+      context.strokeStyle = "#f15a24";
+      context.lineWidth = 1;
+      context.beginPath();
+      for (let i = 0; i <= bars; i++) {
+        const x = (i / bars) * width;
+        const sample = active ? frequencies[Math.min(127, Math.floor(i / bars * 127))] / 255 : 0;
+        const wave = Math.sin(i * 0.48) * 2.5;
+        const amplitude = active ? sample * 20 : 1.5;
+        const y = baseline - Math.abs(Math.sin((i / bars) * Math.PI)) * (amplitude + wave);
+        if (i === 0) context.moveTo(x, y);
+        else context.lineTo(x, y);
+      }
+      context.stroke();
+
+      context.globalAlpha = active ? 0.26 : 0.06;
+      context.beginPath();
+      context.ellipse(center, baseline - 10, maxRadius * (active ? 0.82 : 0.74), maxRadius * 0.2, 0, Math.PI, Math.PI * 2);
+      context.stroke();
+      context.restore();
+      frame = window.requestAnimationFrame(draw);
+    };
+
+    resize();
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
+    frame = window.requestAnimationFrame(draw);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [ambientOn]);
 
   const handleSpotlightMove = (event: ReactPointerEvent<HTMLElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
