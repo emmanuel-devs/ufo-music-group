@@ -1,5 +1,25 @@
 import type { Metadata } from "next";
+import { Archivo_Black, DM_Mono, Manrope } from "next/font/google";
 import "./globals.css";
+
+const archivoBlack = Archivo_Black({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-archivo-black",
+});
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-dm-mono",
+});
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-manrope",
+});
 
 const siteUrl = "https://ufo-music-group.vercel.app";
 const siteTitle = "UFO Music Group Website Concept | Music, Events & Culture";
@@ -75,8 +95,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="preload" as="image" href="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&amp;fit=crop&amp;w=1920&amp;q=78" />
       </head>
-      <body>{children}</body>
+      <body className={`${archivoBlack.variable} ${dmMono.variable} ${manrope.variable}`}>{children}</body>
     </html>
   );
 }
